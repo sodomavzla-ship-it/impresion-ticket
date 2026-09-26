@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket de Orden</title>
+    <style>
+        /* Configuración estricta para ticket térmico (96mm / área útil de ~88mm) */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            width: 88mm;
+            margin: 0;
+            padding: 5mm;
+            background-color: #fff;
+            color: #000;
+            line-height: 1.2;
+        }
+        .center { text-align: center; }
+        .bold { font-weight: bold; }
+        .line { 
+            border-top: 1px dashed #000; 
+            margin: 6px 0; 
+        }
+        .section { margin-bottom: 4px; }
+        
+        @media print {
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="center bold" style="font-size: 16px;">COMPROBANTE DE PEDIDO</div>
+    <div class="line"></div>
+
+    <div class="section"><strong>Fecha:</strong> <span id="t-fecha"></span></div>
+    <div class="line"></div>
+
+    <div class="section"><strong>Orden:</strong> <span id="t-orden"></span></div>
+    <div class="line"></div>
+
+    <div class="section"><strong>Recibe:</strong> <span id="t-recibe"></span></div>
+    <div class="section"><strong>Teléfono:</strong> <span id="t-telefono"></span></div>
+    <div class="section"><strong>Dirección:</strong> <span id="t-direccion"></span></div>
+    <div class="line"></div>
+
+    <div class="section"><strong>Cobrar:</strong> <span id="t-cobrar"></span></div>
+    <div class="section"><strong>RECIBIR:</strong> <span id="t-recibir"></span></div>
+    <div class="section"><strong>CAMBIO:</strong> <span id="t-cambio"></span></div>
+    <div class="line"></div>
+
+    <div class="section"><strong>Motorizado:</strong> <span id="t-motorizado"></span></div>
+    <div class="line"></div>
+
+    <div class="center" style="margin-top: 10px;">¡Gracias por su preferencia!</div>
+
+    <script>
+        // Capturar los parámetros enviados por la URL desde AppSheet
+        const params = new URLSearchParams(window.location.search);
+
+        document.getElementById('t-fecha').innerText = params.get('fecha') || '';
+        document.getElementById('t-orden').innerText = params.get('orden') || '';
+        document.getElementById('t-recibe').innerText = params.get('recibe') || '';
+        document.getElementById('t-telefono').innerText = params.get('telefono') || '';
+        document.getElementById('t-direccion').innerText = params.get('direccion') || '';
+        document.getElementById('t-cobrar').innerText = params.get('cobrar') || '';
+        document.getElementById('t-recibir').innerText = params.get('recibir') || '';
+        document.getElementById('t-cambio').innerText = params.get('cambio') || '';
+        document.getElementById('t-motorizado').innerText = params.get('motorizado') || '';
+
+        // Disparar la ventana de impresión del navegador automáticamente al cargar
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+</body>
+</html>

@@ -2,27 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Ticket de Orden</title>
+    <title>Imprimir Ticket</title>
     <style>
-        /* Configuración estricta para ticket térmico (96mm / área útil de ~88mm) */
+        /* Configuración estricta para ticket térmico de gran formato (96mm) */
         body {
             font-family: 'Courier New', Courier, monospace;
             font-size: 14px;
-            width: 88mm;
+            width: 88mm; /* Ajusta según el área útil de tu impresora de 96mm */
             margin: 0;
             padding: 5mm;
             background-color: #fff;
             color: #000;
-            line-height: 1.2;
         }
         .center { text-align: center; }
         .bold { font-weight: bold; }
-        .line { 
-            border-top: 1px dashed #000; 
-            margin: 6px 0; 
-        }
-        .section { margin-bottom: 4px; }
+        .line { border-bottom: 1px dashed #000; margin: 8px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { text-align: left; padding: 3px 0; }
+        .right { text-align: right; }
         
+        /* Estilo personalizado para los campos solicitados en Arial Black y tamaño 17px */
+        .datos-destacados {
+            font-family: 'Arial Black', Gadget, sans-serif;
+            font-size: 17px;
+            margin: 4px 0;
+        }
+
+        /* Ocultar elementos que no sean el ticket al mandar a imprimir */
         @media print {
             body { padding: 0; }
         }
@@ -30,34 +36,29 @@
 </head>
 <body>
 
-    <div class="center bold" style="font-size: 16px;">COMPROBANTE DE PEDIDO</div>
+    <div class="center bold" id="t-empresa" style="font-size: 16px;">SODOMA DE VENEZUELA</div>
+    <div class="center" id="t-rif">IMPORTACIONES, C.A.</div>
     <div class="line"></div>
-
-    <div class="section"><strong>Fecha:</strong> <span id="t-fecha"></span></div>
+    
+    <!-- Campos con el nuevo estilo (Arial Black, ~17px) -->
+    <div class="datos-destacados"><strong>Orden N°:</strong> <span id="t-orden"></span></div>
+    <div class="datos-destacados"><strong>Fecha:</strong> <span id="t-fecha"></span></div>
+    <div class="datos-destacados"><strong>Recibe:</strong> <span id="t-recibe"></span></div>
+    <div class="datos-destacados"><strong>Contacto:</strong> <span id="t-telefono"></span></div>
+    <div class="datos-destacados"><strong>Dirección:</strong> <span id="t-direccion"></span></div>
+    <div class="datos-destacados"><strong>Cobrar:</strong> <span id="t-cobrar"></span></div>
+    <div class="datos-destacados"><strong>Monto a Cobrar:</strong> <span id="t-recibir"></span></div>
+    <div class="datos-destacados"><strong>Cambio:</strong> <span id="t-cambio"></span></div>
+    <div class="datos-destacados"><strong>Motorizado:</strong> <span id="t-motorizado"></span></div>
+    
     <div class="line"></div>
-
-    <div class="section"><strong>Orden:</strong> <span id="t-orden"></span></div>
-    <div class="line"></div>
-
-    <div class="section"><strong>Recibe:</strong> <span id="t-recibe"></span></div>
-    <div class="section"><strong>Teléfono:</strong> <span id="t-telefono"></span></div>
-    <div class="section"><strong>Dirección:</strong> <span id="t-direccion"></span></div>
-    <div class="line"></div>
-
-    <div class="section"><strong>Cobrar:</strong> <span id="t-cobrar"></span></div>
-    <div class="section"><strong>RECIBIR:</strong> <span id="t-recibir"></span></div>
-    <div class="section"><strong>CAMBIO:</strong> <span id="t-cambio"></span></div>
-    <div class="line"></div>
-
-    <div class="section"><strong>Motorizado:</strong> <span id="t-motorizado"></span></div>
-    <div class="line"></div>
-
-    <div class="center" style="margin-top: 10px;">¡Gracias por su preferencia!</div>
+    
+    <div class="center" style="margin-top: 15px;">¡Gracias por su preferencia!</div>
 
     <script>
-        // Capturar los parámetros enviados por la URL desde AppSheet
+        // 1. Leer los parámetros enviados por la URL desde AppSheet
         const params = new URLSearchParams(window.location.search);
-
+        
         document.getElementById('t-fecha').innerText = params.get('fecha') || '';
         document.getElementById('t-orden').innerText = params.get('orden') || '';
         document.getElementById('t-recibe').innerText = params.get('recibe') || '';
@@ -68,7 +69,7 @@
         document.getElementById('t-cambio').innerText = params.get('cambio') || '';
         document.getElementById('t-motorizado').innerText = params.get('motorizado') || '';
 
-        // Disparar la ventana de impresión del navegador automáticamente al cargar
+        // 2. Disparar el diálogo de impresión del navegador automáticamente tras cargar
         window.onload = function() {
             window.print();
         };
